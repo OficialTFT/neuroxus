@@ -26,14 +26,12 @@ Documento de referência que contém um guia completo de aprendizado em desenvol
 
 **Uso no projeto:**
 Serve como base para a construção e estruturação das informações do arquivo `LEARNING.md`. O agente deve utilizar o TO-LEARN.md como referência para:
-
 - Explicar conceitos técnicos durante as sessões
 - Sugerir fontes de estudo complementares
 - Orientar a estruturação do aprendizado do usuário
 - Garantir que as explicações estejam fundamentadas em conhecimentos robustos
 
 **Quando consultar:**
-
 - Ao apresentar novos conceitos teóricos
 - Ao recomendar práticas de engenharia de software
 - Ao sugerir fontes para aprofundamento
@@ -48,7 +46,6 @@ Serve como base para a construção e estruturação das informações do arquiv
 Cada sessão de trabalho segue a seguinte estrutura:
 
 **Fase 1 - Planejamento (Usuário lidera com suporte do agente):**
-
 - Definir o objetivo da sessão.
 - Quebrar o objetivo em tarefas menores.
 - Identificar dependências e possíveis bloqueios.
@@ -56,7 +53,6 @@ Cada sessão de trabalho segue a seguinte estrutura:
 - O agente deve sugerir a ordem de execução baseada em dependências e complexidade.
 
 **Fase 2 - Execução (Agente lidera com observação do usuário):**
-
 - O agente implementa o código, explicando cada passo em detalhes.
 - Antes de escrever um bloco de código, o agente deve explicar:
   - O que será feito.
@@ -65,14 +61,12 @@ Cada sessão de trabalho segue a seguinte estrutura:
 - Após escrever o bloco, o agente deve explicar o que o código faz linha a linha (quando relevante) ou conceitualmente (quando trivial).
 
 **Fase 3 - Revisão e Reflexão (Conjunta):**
-
 - Revisar o código escrito.
 - Discutir pontos de melhoria.
 - Relacionar o que foi feito com conceitos de engenharia de software.
 - Identificar oportunidades de aprendizado que surgiram durante a sessão.
 
 **Fase 4 - Registro de Aprendizado:**
-
 - O agente deve gerar um resumo da sessão contendo:
   - Conceitos praticados.
   - Decisões tomadas e seus motivos.
@@ -110,7 +104,7 @@ O agente deve seguir e ensinar ativamente os seguintes princípios:
 - **Testes:** Escrever testes sempre que possível, explicando o que está sendo testado e por quê. Priorizar testes unitários, depois de integração, depois E2E.
 - **Documentação:** Manter código autoexplicativo, mas documentar decisões arquiteturais em arquivos ADR (Architecture Decision Records) quando relevante.
 - **Tratamento de erros:** **Nunca** ignorar erros. Tratar explicitamente e explicar as estratégias de tratamento.
-- **Documentação por Sessões:** Segregar a documentação de requisitos e de entrega por sessões do desenvolvimento. Cada sessão deve possuir um diretório isolado (`docs/sessao[n]`) contendo um arquivo `requisitos.md` com a especificação detalhada prévia, e ao final da sessão, um arquivo consolidador `sessao[n]-[título].md` descrevendo a implementação e as decisões tomadas, garantindo a rastreabilidade e a manutenção do histórico evolutivo do projeto.
+- **Documentação por Sessões:** Segregar a documentação de requisitos e de entrega por sprints e sessões do desenvolvimento. Cada sprint possui um diretório isolado (`docs/sprint/[n]/`) contendo o arquivo `sessoes-sprint.md` com a definição estruturada das sessões. Cada sessão da sprint possui um diretório (`docs/sprint/[n]/sessao[n]/`) contendo um arquivo `requisitos.md` com a especificação detalhada prévia, e ao final da sessão, um arquivo consolidador `sessao[n]-[título].md` descrevendo a implementação e as decisões tomadas, garantindo a rastreabilidade e a manutenção do histórico evolutivo do projeto.
 
 ### 4.3. Qualidade de Código
 
@@ -128,26 +122,44 @@ O agente deve seguir e ensinar ativamente os seguintes princípios:
 
 Ao iniciar um novo projeto, o agente deve:
 
-1. **Definir a stack tecnológica** em conjunto com o usuário, discutindo os prós e contras de cada opção.
-2. **Criar a estrutura de diretórios** seguindo as convenções da stack escolhida, explicando cada diretório e seu propósito.
-3. **Configurar o ambiente de desenvolvimento** (linting, formatação, git hooks, etc.), explicando o papel de cada ferramenta.
-4. **Definir a arquitetura inicial** e documentar em um ADR, explicando as alternativas consideradas.
-5. **Configurar CI/CD básico** quando aplicável, explicando cada etapa do pipeline.
-6. **Atualizar este arquivo AGENTS.md** com as definições específicas do projeto na seção de configuração (Seção 9).
+1. **Verificar a existência do documento de planejamento** (`docs/planejamento/planejamento.md`). Caso não exista, debater com o usuário em primeira instância para criá-lo. Este documento deve conter toda a documentação de planejamento do projeto: escopo, objetivos, stack proposta, arquitetura inicial, restrições e premissas.
+2. **Definir a stack tecnológica** em conjunto com o usuário, discutindo os prós e contras de cada opção.
+3. **Criar a estrutura de diretórios** seguindo as convenções da stack escolhida, explicando cada diretório e seu propósito.
+4. **Configurar o ambiente de desenvolvimento** (linting, formatação, git hooks, etc.), explicando o papel de cada ferramenta.
+5. **Definir a arquitetura inicial** e documentar em um ADR, explicando as alternativas consideradas.
+6. **Configurar CI/CD básico** quando aplicável, explicando cada etapa do pipeline.
+7. **Atualizar este arquivo AGENTS.md** com as definições específicas do projeto na seção de configuração (Seção 9).
 
-### 5.2. Início de Feature/Tarefa
+### 5.2. Definição de Sprints
 
-Para cada nova tarefa, o agente deve:
+Após a definição do planejamento e a configuração do projeto no AGENTS.md, o agente deve:
 
-1. **Criar o diretório da sessão** no caminho docs/sessao[n] (onde [n] é o número correspondente à sessão atual), caso não exista.
-2. **Elaborar o arquivo** `requisitos.md` no interior do diretório recém-criado (`docs/sessao[n]/requisitos.md`), detalhando de forma granular e ostensiva todos os requisitos funcionais, não funcionais e restrições inerentes à sessão que será desenvolvida.
+1. **Analisar o documento de planejamento** (`docs/planejamento/planejamento.md`) e o guia de referência (`TO-LEARN.md`) para embasar a estruturação das sprints com boas práticas de engenharia de software.
+2. **Definir as sprints de desenvolvimento**, quebrando o projeto em ciclos incrementais de entrega. Cada sprint deve ter objetivo claro, escopo delimitado e critérios de aceitação bem definidos.
+3. **Criar o arquivo de definição de sprints** em `docs/sprint/sprint.md`, contendo a visão geral de todas as sprints planejadas, suas dependências e a ordem de execução.
+4. **Apresentar o plano de sprints** ao usuário para validação antes de iniciar a primeira sprint.
+
+### 5.3. Início de Sprint
+
+Ao iniciar uma nova sprint, o agente deve:
+
+1. **Criar o diretório da sprint** em `docs/sprint/[n]/` (onde `[n]` é o número identificador da sprint).
+2. **Criar o arquivo de definição das sessões** em `docs/sprint/[n]/sessoes-sprint.md`, quebrando a sprint em sessões bem estruturadas, cada uma com objetivos, tarefas e critérios de aceitação específicos.
+3. **Validar o planejamento das sessões** com o usuário antes de iniciar a primeira sessão da sprint.
+
+### 5.4. Início de Sessão
+
+Para cada nova sessão dentro de uma sprint, o agente deve:
+
+1. **Criar o diretório da sessão** no caminho `docs/sprint/[n]/sessao[n]/` (onde o primeiro `[n]` é o número da sprint e o segundo `[n]` é o número da sessão dentro da sprint), caso não exista.
+2. **Elaborar o arquivo** `requisitos.md` no interior do diretório recém-criado (`docs/sprint/[n]/sessao[n]/requisitos.md`), detalhando de forma granular e ostensiva todos os requisitos funcionais, não funcionais e restrições inerentes à sessão que será desenvolvida.
 3. **Analisar o escopo** e quebrar em subtarefas menores.
 4. **Identificar impacto** no código existente.
 5. **Sugerir a estratégia de implementação** (TDD, BDD, etc.).
 6. **Apresentar o plano** ao usuário antes de começar a implementar.
 7. **Implementar incrementalmente**, com checkpoints para revisão com o usuário.
 
-### 5.3. Durante a Implementação
+### 5.5. Durante a Implementação
 
 - Escrever código em blocos lógicos e compreensíveis.
 - Após cada bloco significativo, explicar o que foi feito e verificar se o usuário compreendeu.
@@ -155,14 +167,14 @@ Para cada nova tarefa, o agente deve:
 - Refatorar imediatamente quando identificar code smells, explicando o problema e a solução.
 - **Nunca** deixar TODOs sem contexto. Se criar um TODO, explicar o motivo e a prioridade.
 
-### 5.4. Finalização de Feature/Tarefa
+### 5.6. Finalização de Sessão
 
 1. **Revisão de código completa** do que foi implementado.
 2. **Verificar cobertura de testes** e explicar lacunas, se houver.
 3. **Atualizar documentação** quando necessário.
-4. **Gerar o arquivo de documentação final da sessão** seguindo o padrão de nomenclatura `sessao[n]-[título].md` (por exemplo: `sessao1-inicializacao.md`), armazenando-o no diretório respectivo (`docs/sessao[n]/`). Este arquivo deve consolidar o que foi implementado, quadro as decisões técnicas e o fechamento da sessão.
+4. **Gerar o arquivo de documentação final da sessão** seguindo o padrão de nomenclatura `sessao[n]-[título].md` (por exemplo: `sessao1-inicializacao.md`), armazenando-o no diretório da sessão dentro da sprint (`docs/sprint/[n]/sessao[n]/`). Este arquivo deve consolidar o que foi implementado, as decisões técnicas e o fechamento da sessão.
 5. **Gerar commit semântico** com mensagem descritiva.
-6. **Resumo de aprendizado** da tarefa.
+6. **Resumo de aprendizado** da sessão.
 
 ---
 
@@ -187,11 +199,8 @@ O agente deve calibrar o nível de detalhe da explicação com base no contexto:
 - **Conceito dominado:** Apenas confirmação rápida, focando nos aspectos práticos.
 
 ### 6.3. Registro de Aprendizado
-
 **Baseado no documento TO-LEARN.md:**
 Para garantir qualidade e consistência, o LEARNING.md deve utilizar o TO-LEARN.md como base para estruturação de informações. O agente deve:
-Para garantir qualidade e consistência, o LEARNING.md deve utilizar o TO-LEARN.md como base para estruturação de informações. O agente deve:
-
 - Consultar o TO-LEARN.md quando introduzir novos conceitos
 - Estruturar o LEARNING.md seguindo os mesmos tópicos principais
 - Explicar as conexões entre conceitos do projeto e o conteúdo do TO-LEARN.md
@@ -211,7 +220,6 @@ Para garantir qualidade e consistência, o LEARNING.md deve utilizar o TO-LEARN.
 6. **Nunca** hardcodar valores que possam mudar. Usar variáveis de ambiente ou configuração.
 7. Validação de entrada em todas as funções públicas e APIs.
 8. Logging estruturado quando aplicável, explicando por que é importante.
-
 - Quando otimizar, medir antes e depois. Explicar a métrica utilizada.
 - Preferir algoritmos com complexidade adequada ao volume de dados esperado.
 
@@ -287,7 +295,7 @@ O agente deve recomendar fontes confiáveis para aprofundamento, distribuindo en
 
 - Padrão de nomenclatura de arquivos: [ ]
 - Padrão de nomenclatura de variáveis/funções: [ ]
-- Estrutura de diretórios: Padrão da stack + `docs/sessao[n]/` para documentação de requisitos e entregáveis por sessão
+- Estrutura de diretórios: Padrão da stack + `docs/planejamento/` para documentação de planejamento, `docs/sprint/` para documentação de sprints e `docs/sprint/[n]/sessao[n]/` para documentação por sessão dentro da sprint
 - Padrão de commits: Conventional Commits
 - Idioma do código e comentários: [ ]
 - Idioma da documentação: [ ]
@@ -354,8 +362,9 @@ Ao final de cada sessão de trabalho, o agente deve verificar:
 - [ ] O código está sem warnings ou erros de linting?
 - [ ] Foram indicadas fontes para estudo complementar?
 - [ ] A sessão foi resumida com pontos de aprendizado?
-- [ ] O diretório e o arquivo de requisitos (`docs/sessao[n]/requisitos.md`) foram criados no início da sessão?
-- [ ] O arquivo de documentação final da sessão (`docs/sessao[n]/sessao[n]-[título].md`) foi gerado ao final da tarefa/sessão?
+- [ ] O diretório e o arquivo de requisitos (`docs/sprint/[n]/sessao[n]/requisitos.md`) foram criados no início da sessão?
+- [ ] O arquivo de documentação final da sessão (`docs/sprint/[n]/sessao[n]/sessao[n]-[título].md`) foi gerado ao final da sessão?
+- [ ] O arquivo `docs/sprint/[n]/sessoes-sprint.md` foi atualizado com o progresso da sprint?
 - [ ] O próximo passo foi definido para a próxima sessão?
 
 ---
@@ -368,5 +377,5 @@ O agente deve lembrar: o objetivo final não é apenas entregar software funcion
 
 ---
 
-_Última atualização deste documento: [data a ser preenchida na primeira sessão]_
-_Versão: 1.2_
+*Última atualização deste documento: [data a ser preenchida na primeira sessão]*
+*Versão: 1.3*

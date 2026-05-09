@@ -33,7 +33,7 @@ docs/
 │   └── sessao1-inicializacao-projeto.md
 ├── sessao2/
 │   ├── requisitos.md
-│   └── sessao2-infraestrutura-oracle.md
+│   └── sessao2-infraestrutura-gcp.md
 ├── sessao3/
 │   ├── requisitos.md
 │   └── sessao3-conexao-backend-banco.md
@@ -80,28 +80,28 @@ docs/
 
 ---
 
-## Sessão 2 — Infraestrutura: Oracle Cloud + Docker
+## Sessão 2 — Infraestrutura: GCP + Docker + ArangoDB
 
 | Campo                               | Valor                                                                                      |
 | ----------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Dias estimados**                  | 2–3                                                                                        |
+| **Dias estimados**                  | 1                                                                                           |
 | **Tarefa da Sprint**                | 1.2                                                                                        |
-| **Princípios praticados**           | DevOps, IaC (Docker Compose), Segurança (firewall, TLS)                                    |
-| **Critério de aceitação da sessão** | ArangoDB acessível via `https://arango.<domínio>.com` com HTTPS válido, `arangosh` conecta |
+| **Princípios praticados**           | DevOps, IaC (Docker Compose), Segurança (firewall em camadas)                                    |
+| **Critério de aceitação da sessão** | ArangoDB rodando em Docker, acessível via `localhost:8529`, UFW + GCP Firewall configurados, backup funcional |
 
 ### Subtarefas
 
 | #     | Tarefa                           | Descrição                                                                            |
 | ----- | -------------------------------- | ------------------------------------------------------------------------------------ |
-| 1.2.1 | Criar conta Oracle Cloud         | Cadastro, cartão de crédito para verificação (não cobrado)                           |
-| 1.2.2 | Provisionar VM ARM               | Ubuntu 22.04 LTS, shape VM.Standard.A1.Flex (4 OCPUs / 24 GB RAM), boot volume 50 GB |
-| 1.2.3 | Configurar acesso SSH            | Upload da chave pública, conectar via `ssh -i <chave> opc@<IP>`                      |
-| 1.2.4 | Instalar Docker e Docker Compose | `docker-ce`, `docker-compose-plugin`, adicionar usuário ao grupo `docker`            |
-| 1.2.5 | Subir container ArangoDB 3.11    | Via `docker-compose.yml` com volumes persistentes                                    |
-| 1.2.6 | Instalar e configurar Caddy      | Proxy reverso com TLS automático (Let's Encrypt) para `arango.<domínio>.com`         |
-| 1.2.7 | Configurar firewall              | Oracle Security Lists (portas 80, 443) + UFW (apenas SSH, 80, 443)                   |
-| 1.2.8 | Criar banco e usuário            | Banco `knowledgebase`, usuário `app_user` com senha forte                            |
-| 1.2.9 | Script de backup                 | `backup-arango.sh` agendado no crontab                                               |
+| ~~1.2.1~~ | ~~Criar conta Oracle Cloud~~         | Ignorado — Oracle Cloud indisponível                                        |
+| ~~1.2.2~~ | ~~Provisionar VM ARM~~               | Ignorado — VM criada manualmente no GCP                                      |
+| ~~1.2.3~~ | ~~Configurar acesso SSH~~            | Ignorado — já configurado                                                    |
+| 1.2.4 | Instalar Docker e Docker Compose | `docker-ce`, `docker-compose-plugin`, adicionar usuário ao grupo `docker`    |
+| 1.2.5 | Subir container ArangoDB 3.11    | Via `docker-compose.yml` com volumes persistentes e limite de memória (400 MB)|
+| ~~1.2.6~~ | ~~Instalar e configurar Caddy~~  | Adiado — sem domínio disponível                                              |
+| 1.2.7 | Configurar firewall              | GCP VPC Firewall (porta 8529) + UFW (apenas SSH, 8529)                       |
+| 1.2.8 | Criar banco e usuário            | Banco `knowledgebase`, usuário `app_user` com permissão RW                   |
+| 1.2.9 | Script de backup                 | `backup-arango.sh` agendado no crontab (container temporário na rede Docker) |
 
 ### Objetivos de Aprendizado
 
@@ -114,9 +114,9 @@ docs/
 
 | Risco                         | Mitigação                                                         |
 | ----------------------------- | ----------------------------------------------------------------- |
-| Oracle Cloud recusar cadastro | Plano B: MongoDB Atlas free tier (já documentado no planejamento) |
-| Cartão de crédito recusado    | Tentar outro cartão ou usar conta Oracle Cloud existente          |
-| DNS não propagado             | Usar IP direto da VM no `ARANGO_URL` temporariamente              |
+| RAM limitada (952 MB)         | Swap de 2 GB + `mem_limit: 400m` no container                     |
+| GCP VM pode ser reiniciada    | Configurar persistência do swap em `/etc/fstab` posteriormente    |
+| Sem domínio para TLS          | Acesso via HTTP temporariamente; Caddy adiado                     |
 
 ---
 
@@ -218,8 +218,8 @@ Sessão 4 (CI/CD — Deploy Vercel)
 ## Check-list de Progresso da Sprint
 
 ```markdown
-- [ ] **Sessão 1**: npm run dev funciona, ESLint + Prettier ok, estrutura de pastas criada
-- [ ] **Sessão 2**: ArangoDB acessível via HTTPS, Docker rodando, Caddy com TLS
+- [x] **Sessão 1**: npm run dev funciona, ESLint + Prettier ok, estrutura de pastas criada
+- [x] **Sessão 2**: Docker + ArangoDB rodando (GCP — adaptado), firewall configurado, backup funcional
 - [ ] **Sessão 3**: GET /api/health → 200, migrações executadas, arango.ts implementado
 - [ ] **Sessão 4**: Push na main → deploy automático, /api/health responde em produção
 ```
