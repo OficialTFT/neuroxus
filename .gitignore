@@ -13,15 +13,13 @@ node_modules
 logs
 *.log
 
-# Misc
-.DS_Store
-.fleet
-.idea
-docs/
-.agents/
-.crush/
-
 # Local env files
 .env
 .env.*
 !.env.example
+
+# IDE configs
+.fleet
+.idea
+.agents/
+.crush/
