@@ -10,9 +10,13 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "migrate": "node --env-file .env --import tsx server/utils/migrate.ts",
+    "db:up": "podman-compose -f docker-compose.dev.yml up -d",
+    "db:down": "podman-compose -f docker-compose.dev.yml down"
   },
   "dependencies": {
+    "arangojs": "^8.8.1",
     "nuxt": "^4.4.4",
     "vue": "^3.5.33",
     "vue-router": "^5.0.6"
@@ -21,6 +25,7 @@
     "@nuxt/eslint": "^1.15.2",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "tsx": "^4.21.0"
   }
 }

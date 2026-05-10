@@ -1,0 +1,23 @@
+services:
+  arangodb:
+    image: docker.io/arangodb:3.11
+    container_name: arangodb-dev
+    ports:
+      - "8529:8529"
+    environment:
+      ARANGO_ROOT_PASSWORD: ${ARANGO_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - arango_dev_data:/var/lib/arangodb3
+      - arango_dev_apps:/var/lib/arangodb3-apps
+    mem_limit: 400m
+    restart: unless-stopped
+    healthcheck:
+      test: curl -f http://localhost:8529/_api/version || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  arango_dev_data:
+  arango_dev_apps:

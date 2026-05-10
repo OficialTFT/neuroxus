@@ -220,7 +220,7 @@ Sessão 4 (CI/CD — Deploy Vercel)
 ```markdown
 - [x] **Sessão 1**: npm run dev funciona, ESLint + Prettier ok, estrutura de pastas criada
 - [x] **Sessão 2**: Docker + ArangoDB rodando (GCP — adaptado), firewall configurado, backup funcional
-- [ ] **Sessão 3**: GET /api/health → 200, migrações executadas, arango.ts implementado
+- [x] **Sessão 3**: GET /api/health → 200, migrações executadas, arango.ts implementado
 - [ ] **Sessão 4**: Push na main → deploy automático, /api/health responde em produção
 ```
 
